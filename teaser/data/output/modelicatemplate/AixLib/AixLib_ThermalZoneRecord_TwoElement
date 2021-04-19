@@ -65,7 +65,8 @@ record ${zone.parent.name}_${zone.name} "${zone.parent.name}_${zone.name}"
     ratioConvectiveHeatMachines = ${zone.use_conditions.ratio_conv_rad_machines},
     lightingPowerSpecific = ${zone.use_conditions.lighting_power},
     ratioConvectiveHeatLighting = ${zone.use_conditions.ratio_conv_rad_lighting},
-    useConstantACHrate = ${get_true_false(zone.use_conditions.use_constant_infiltration)},
+    // todo remove hardcode
+    useConstantACHrate = ${get_true_false(True)},
     baseACH = ${zone.use_conditions.infiltration_rate},
     maxUserACH = ${zone.use_conditions.max_user_infiltration},
     maxOverheatingACH = ${get_list(zone.use_conditions.max_overheating_infiltration)},
@@ -85,7 +86,8 @@ record ${zone.parent.name}_${zone.name} "${zone.parent.name}_${zone.name}"
     lCool = -10000,
     KRCool = 10000,
     TNCool = 1,
-    CoolerOn = ${get_true_false(zone.use_conditions.with_cooling)},
+    // todo remove hardcode
+    CoolerOn = ${get_true_false(True)},
     withIdealThresholds = ${get_true_false(zone.use_conditions.with_ideal_thresholds)},
     TThresholdHeater = ${zone.use_conditions.T_threshold_heating},
     TThresholdCooler = ${zone.use_conditions.T_threshold_cooling});

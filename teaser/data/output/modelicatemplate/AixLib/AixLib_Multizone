@@ -126,11 +126,18 @@ AixLib.ThermalZones.ReducedOrder.Multizone.MultizoneEquipped multizone(
     annotation (Placement(transformation(extent={{24,58},{38,72}})));
   Modelica.Blocks.Continuous.Integrator WCoolerSum
     "Energy consumed for cooling with ideal coolers"
-    annotation (Placement(transformation(extent={{48,58},{62,72}})));
+    annotation (Placement(transformation(extent={{44,58},{58,72}})));
   Modelica.Blocks.Continuous.Integrator WHeaterSum
     "Energy consumed for heating with ideal heaters"
-    annotation (Placement(transformation(extent={{48,82},{62,96}})));
-
+    annotation (Placement(transformation(extent={{44,82},{58,96}})));
+  Modelica.Blocks.Math.Sum TAirSum(nin=multizone.numZones)
+    "Summed up air temperature of all zones"
+    annotation (Placement(transformation(extent={{68,82},{82,96}})));
+  Modelica.Blocks.Sources.Constant numZones(k=multizone.numZones)
+    "Constant with number of zones"
+    annotation (Placement(transformation(extent={{68,60},{82,74}})));
+  Modelica.Blocks.Math.Division TAirAverage "Average temperature of all zones"
+    annotation (Placement(transformation(extent={{86,72},{100,86}})));
 equation
   connect(weaDat.weaBus, multizone.weaBus) annotation (Line(
       points={{-62,40},{-32,40},{-32,6},{34,6}},
@@ -152,10 +159,16 @@ equation
           -5},{54,50},{20,50},{20,89},{22.6,89}}, color={0,0,127}));
   connect(multizone.PCooler, PCoolerSum.u) annotation (Line(points={{51,-7},{54,
           -7},{54,50},{20,50},{20,65},{22.6,65}}, color={0,0,127}));
-  connect(PHeaterSum.y, WHeaterSum.u) annotation (Line(points={{38.7,89},{42.35,
-          89},{42.35,89},{46.6,89}}, color={0,0,127}));
-  connect(PCoolerSum.y, WCoolerSum.u) annotation (Line(points={{38.7,65},{42.35,
-          65},{42.35,65},{46.6,65}}, color={0,0,127}));
+  connect(PHeaterSum.y, WHeaterSum.u) annotation (Line(points={{38.7,89},{42.6,89}},
+                                     color={0,0,127}));
+  connect(PCoolerSum.y, WCoolerSum.u) annotation (Line(points={{38.7,65},{42.6,65}},
+                                     color={0,0,127}));
+  connect(multizone.TAir, TAirSum.u) annotation (Line(points={{51,4.95},{66,4.95},
+          {66,89},{66.6,89}}, color={0,0,127}));
+  connect(numZones.y, TAirAverage.u2) annotation (Line(points={{82.7,67},{82.7,70.5},
+          {84.6,70.5},{84.6,74.8}}, color={0,0,127}));
+  connect(TAirSum.y, TAirAverage.u1) annotation (Line(points={{82.7,89},{82.7,86.5},
+          {84.6,86.5},{84.6,83.2}}, color={0,0,127}));
 
   annotation (experiment(
       StartTime=${str(zone.parent.parent.modelica_info.start_time)},
